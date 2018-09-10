@@ -50,3 +50,13 @@ in irb
   oyster.in_journey? == true
   oyster.touch_out
   oyster.in_journey? == false
+
+In order to pay for my journey
+As a customer
+I need to have the minimum amount (£1) for a single journey.
+
+in irb
+  load './lib/oystercard.rb'
+  oyster = Oystercard.new
+  oyster.touch_in
+  --> raises error

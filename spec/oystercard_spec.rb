@@ -22,26 +22,33 @@ describe Oystercard do
   describe '#deduct' do
     it { expect(subject).to respond_to(:deduct).with(1).argument }
     it 'should deduct balance by 5 if deducted 5' do
-      oyster = Oystercard.new(10)
+      oyster = Oystercard.new(Oystercard::LOWER_LIMIT)
       expect{ oyster.deduct(5) }.to change { oyster.balance }.by (-5)
     end
   end
 
   describe '#in_journey?' do
     it { expect(subject).to respond_to(:in_journey?) }
-    it { expect(subject.in_journey?).to eq false }
+    it { expect(subject).to_not be_in_journey }
   end
 
   describe '#touch_in' do
     it "should make in_journey return true" do
-      expect { subject.touch_in }.to change { subject.in_journey? }.from(false).to (true)
+      oyster = Oystercard.new(Oystercard::LOWER_LIMIT)
+      oyster.touch_in
+      expect(oyster).to be_in_journey
+    end
+    it "should raise error when balance below LOWER_LIMIT" do
+      expect { subject.touch_in }.to raise_error 'Sorry, you do not have enough money.'
     end
   end
 
   describe '#touch_out' do
     it "should make in_journey return false" do
-      subject.touch_in
-      expect { subject.touch_out }.to change { subject.in_journey? }.from(true).to (false)
+      oyster = Oystercard.new(Oystercard::LOWER_LIMIT)
+      oyster.touch_in
+      oyster.touch_out
+      expect(oyster).to_not be_in_journey
     end
   end
 end
