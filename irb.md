@@ -60,3 +60,52 @@ in irb
   oyster = Oystercard.new
   oyster.touch_in
   --> raises error
+
+  In order to pay for my journey
+  As a customer
+  When my journey is complete, I need the correct amount deducted from my card
+
+  in irb
+    load './lib/oystercard.rb'
+    oyster = Oystercard.new(10)
+    oyster.touch_in
+    oyster.touch_out
+    oyster.balance == 10 - 1
+
+In order to pay for my journey
+As a customer
+I need to know where I've travelled from
+
+in irb
+    load './lib/oystercard.rb'
+    oyster = Oystercard.new(10)
+    oyster.touch_in('West Hampstead')
+    oyster.entry_station == 'West Hampstead'
+
+In order to know where I have been
+As a customer
+I want to see all my previous trips
+
+in irb
+    load './lib/oystercard.rb'
+    oyster = Oystercard.new(10)
+    oyster.touch_in('West Hampstead')
+    oyster.journeys == [{
+      in: 'West Hampstead',
+      out: nil
+      }]
+    oyster.touch_out('Farringdon')
+    oyster.journeys == [{
+      in: 'West Hampstead',
+      out: 'Farringdon'
+      }]
+    oyster.touch_in('Barbican')
+    oyster.touch_out('Tower Hill')
+    oyster.journeys == [{
+        in: 'West Hampstead',
+        out: 'Farringdon'
+      }, {
+        in: 'Barbican',
+        out: 'Tower Hill'
+        }
+      ]
