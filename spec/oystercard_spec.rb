@@ -11,10 +11,6 @@ describe Oystercard do
   let(:touch_in) { @oyster.touch_in(station) }
   let(:touch_out) { @oyster.touch_out(exit_station) }
 
-  describe 'entry_station' do
-    it { is_expected.to respond_to :entry_station }
-  end
-
   describe 'journeys' do
     it { is_expected.to respond_to :journeys }
     it 'should be empty as default' do
@@ -57,10 +53,6 @@ describe Oystercard do
     it "should raise error when balance below LOWER_LIMIT" do
       expect { subject.touch_in(station) }.to raise_error 'Sorry, you do not have enough money.'
     end
-    it "remembers entry station" do
-      touch_in
-      expect(@oyster.entry_station).to eq station
-    end
     it "create hash with entry station as in value" do
       touch_in
       expect(@oyster.journeys[-1]).to eq ({in: station})
@@ -82,10 +74,6 @@ describe Oystercard do
     it "should reduce balance on card by fare(1)" do
       touch_in
       expect{ touch_out }.to change { @oyster.balance }.by (-Oystercard::MINIMUM_CHARGE)
-    end
-    it 'make it forget entry station' do
-      touch_in
-      expect{ touch_out }.to change { @oyster.entry_station }.from(station).to(nil)
     end
     it "Retain exit station" do
       touch_in

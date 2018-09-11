@@ -109,3 +109,11 @@ in irb
         out: 'Tower Hill'
         }
       ]
+
+In order to know how far I have travelled
+As a customer
+I want to know what zone a station is in
+
+in irb
+  load('./lib/station.rb')
+  station = Station.new
